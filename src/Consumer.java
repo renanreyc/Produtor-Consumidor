@@ -1,19 +1,21 @@
 import java.util.List;
+import java.util.concurrent.Semaphore;
+
+import tools.Sleep;
 
 public class Consumer implements Runnable {
     private List<String> buffer;
     private String name;
+    Semaphore semaforo;
 
-    public Consumer(List<String> buffer) {
+    public Consumer(String name, List<String> buffer, Semaphore semaforo) {
+        this.name = name;
         this.buffer = buffer;
+        this.semaforo = semaforo;
       }
 
     public String getName() {
     return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public void run() {
@@ -28,7 +30,7 @@ public class Consumer implements Runnable {
             System.out.println("... \t" + "Lista vazia, " + getName() + " está dormindo! zzz" );
 
             // sleep
-            sleep(5000);
+            Sleep.sleep(5000);
             continue;
         } catch (Exception e){
             System.out.println(e);
@@ -39,23 +41,28 @@ public class Consumer implements Runnable {
 
      // Remover item da lista
      try {
-        String removedItem = buffer.remove(0);
-        System.out.println("DEL \t" + getName() + "\t item removido: " + removedItem);
+      semaforo.acquire();
+
+      // Verificar se a kusta está vazia
+        if(buffer.size() == 0) {
+          System.out.println("... \t" + "Lista vazia, " + getName() + " está dormindo! zzz");
+          Sleep.sleep(5000);
+        } else {
+          // Remover item da lista
+          String removedItem = buffer.remove(0);
+          System.out.println("DEL \t" + getName() + "\t item removido: " + removedItem);
+
+          System.out.println("Lista: " + buffer);
+        }       
       } catch (Exception e) {
         System.out.println(e);
+        e.printStackTrace();
         return;
+      } finally {
+        semaforo.release();
       }
-
       // Sleep
-      sleep(3000);
-    }
-  }
-
-  public void sleep(int time) {
-    try {
-      Thread.currentThread().sleep(time);
-    } catch (Exception ex) {
-      System.out.println(ex);
+      Sleep.sleep(3000);
     }
   }
 }
