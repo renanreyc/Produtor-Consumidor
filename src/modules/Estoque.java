@@ -11,7 +11,7 @@ public class Estoque {
     private int size;
     private List<String> buffer = new ArrayList<>();
     Semaphore semaforo = new Semaphore(1);
-    private int bound = 20;
+    private int bound = 50;
     GenerateRandomNumberNoDuplicate generateRandomNumberNoDuplicate = new GenerateRandomNumberNoDuplicate();
     
 

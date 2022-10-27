@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 public class GenerateRandomNumberNoDuplicate {
-    private List<String> bufferFull = new ArrayList<>();;
+    private List<String> bufferFull = new ArrayList<>();
     private int randomNumerateGenerate;
 
     //Get selected size number without duplicate
@@ -18,11 +18,12 @@ public class GenerateRandomNumberNoDuplicate {
            int randomNumber = random.nextInt(bound);
            
            //Check for duplicate values
-           if (!this.bufferFull.contains(randomNumber)) {
+           if (!this.bufferFull.contains(String.valueOf(randomNumber))) {
                 this.bufferFull.add(String.valueOf(randomNumber));
                 randomNumerateGenerate = randomNumber;
            }
        }
+    //    System.out.println(this.bufferFull);
 
        return randomNumerateGenerate;
    }
