@@ -23,8 +23,6 @@ public class GenerateRandomNumberNoDuplicate {
                 randomNumerateGenerate = randomNumber;
            }
        }
-    //    System.out.println(this.bufferFull);
-
        return randomNumerateGenerate;
    }
 
